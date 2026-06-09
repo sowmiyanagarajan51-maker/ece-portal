@@ -145,7 +145,6 @@
                             <th class="p-4">7. Parent Mobile</th>
                             <th class="p-4">8. Year</th>
                             <th class="p-4">9. Sem</th>
-                            <th class="p-4 text-center text-red-600">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 text-slate-700" id="registryTableBody"></tbody>
@@ -163,14 +162,17 @@
     </footer>
 
     <script>
-        let globallyTrackedYear = "";
+        // ====================================================================
+        // ⚠️ CRITICAL CONFIGURATION: PASTE YOUR SPREADSHEET ID INSIDE THESE QUOTES
+        // ====================================================================
+        const SPREADSHEET_ID = "PASTE_YOUR_SPREADSHEET_ID_HERE";
 
-        // INBUILT SECURITY VERIFICATION ROUTINE
         function executeInbuiltAuth(event) {
             event.preventDefault();
             const idInput = document.getElementById('authEmail').value;
             const passInput = document.getElementById('authPassword').value;
 
+            // Direct local security verification bypasses Firebase errors
             if (idInput === "admin@ece.com" && passInput === "ece2026") {
                 document.getElementById('loginGateScreen').classList.add('opacity-0', 'pointer-events-none');
                 setTimeout(() => document.getElementById('loginGateScreen').remove(), 300);
@@ -180,7 +182,6 @@
         }
 
         function handleFolderClick(selectedYear) {
-            globallyTrackedYear = selectedYear;
             document.getElementById('indicatorYearName').innerText = selectedYear;
             document.getElementById('tableActiveYearLabel').innerText = selectedYear;
             document.getElementById('statsTitleLabel').innerText = `${selectedYear} Batch`;
@@ -190,7 +191,7 @@
             document.getElementById('headerBatchIndicator').classList.remove('hidden');
             document.getElementById('dataTableDisplaySection').classList.remove('hidden');
 
-            renderRegistryRows(selectedYear);
+            fetchCloudDataAndRender(selectedYear);
         }
 
         function returnToFolders() {
@@ -199,73 +200,93 @@
             document.getElementById('folderSelectionSection').classList.remove('hidden');
         }
 
-        function renderRegistryRows(targetYear) {
+        function fetchCloudDataAndRender(targetYear) {
             const tbody = document.getElementById('registryTableBody');
             const alertBox = document.getElementById('tableEmptyAlertBox');
             
-            const database = JSON.parse(localStorage.getItem('ece_students_db')) || [];
-            const filteredCohort = database.filter(student => student.year === targetYear);
+            tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-slate-400 font-medium">Streaming verification data matrix securely from cloud ledger...</td></tr>`;
             
-            document.getElementById('totalCountBadge').innerText = filteredCohort.length;
+            // Build CSV public streaming link directly from the published Sheet ID
+            const fetchUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv`;
 
-            if (filteredCohort.length === 0) {
-                tbody.innerHTML = "";
-                alertBox.classList.remove('hidden');
-                return;
-            }
+            fetch(fetchUrl)
+            .then(res => res.text())
+            .then(csvText => {
+                const rows = parseCSVToArray(csvText);
+                
+                // Filters dataset rows looking at the "Year Category" column index 7
+                const filteredCohort = rows.filter(row => row[7] && row[7].trim().toLowerCase() === targetYear.toLowerCase());
+                
+                document.getElementById('totalCountBadge').innerText = filteredCohort.length;
 
-            alertBox.classList.add('hidden');
-            let builtRowsMarkup = "";
+                if (filteredCohort.length === 0) {
+                    tbody.innerHTML = "";
+                    alertBox.classList.remove('hidden');
+                    return;
+                }
 
-            // Loop and render rows including a clean delete operation target parameter
-            database.forEach((student, globalIndex) => {
-                if (student.year !== targetYear) return;
+                alertBox.classList.add('hidden');
+                let builtRowsMarkup = "";
 
-                builtRowsMarkup += `
-                    <tr class="hover:bg-slate-50 transition font-medium">
-                        <td class="p-4 text-slate-900 font-bold flex items-center space-x-2.5">
-                            <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-[10px] font-extrabold uppercase">${student.name.substring(0,2)}</div>
-                            <span>${student.name}</span>
-                        </td>
-                        <td class="p-4 font-mono text-slate-600 tracking-tight">${student.regNo}</td>
-                        <td class="p-4 text-slate-500">${student.dob}</td>
-                        <td class="p-4 max-w-xs truncate text-slate-600" title="${student.address}">${student.address}</td>
-                        <td class="p-4 font-mono text-slate-600">${student.studentMobile}</td>
-                        <td class="p-4 text-slate-600">${student.mailId}</td>
-                        <td class="p-4 font-mono text-slate-600">${student.parentMobile}</td>
-                        <td class="p-4"><span class="bg-amber-100 text-amber-900 font-semibold px-2.5 py-0.5 rounded text-[11px]">${student.year}</span></td>
-                        <td class="p-4"><span class="bg-slate-200 text-slate-800 font-semibold px-2 py-0.5 rounded text-[11px]">${student.semester}</span></td>
-                        <td class="p-4 text-center">
-                            <button onclick="deleteStudentRecord(${globalIndex})" class="bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 px-2.5 py-1.5 rounded-lg border border-red-200 transition text-xs flex items-center gap-1 mx-auto">
-                                <i class="fa-solid fa-trash-can"></i> Delete
-                            </button>
-                        </td>
-                    </tr>`;
+                filteredCohort.forEach(student => {
+                    builtRowsMarkup += `
+                        <tr class="hover:bg-slate-50 transition font-medium">
+                            <td class="p-4 text-slate-900 font-bold flex items-center space-x-2.5">
+                                <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center text-[10px] font-extrabold uppercase">${student[0] ? student[0].substring(0,2) : 'ST'}</div>
+                                <span>${student[0]}</span>
+                            </td>
+                            <td class="p-4 font-mono text-slate-600 tracking-tight">${student[1]}</td>
+                            <td class="p-4 text-slate-500">${student[2]}</td>
+                            <td class="p-4 max-w-xs truncate text-slate-600" title="${student[3]}">${student[3]}</td>
+                            <td class="p-4 font-mono text-slate-600">${student[4]}</td>
+                            <td class="p-4 text-slate-600">${student[5]}</td>
+                            <td class="p-4 font-mono text-slate-600">${student[6]}</td>
+                            <td class="p-4"><span class="bg-amber-100 text-amber-900 font-semibold px-2.5 py-0.5 rounded text-[11px]">${student[7]}</span></td>
+                            <td class="p-4"><span class="bg-slate-200 text-slate-800 font-semibold px-2 py-0.5 rounded text-[11px]">${student[8]}</span></td>
+                        </tr>`;
+                });
+
+                tbody.innerHTML = builtRowsMarkup;
+            })
+            .catch(err => {
+                console.error("Cloud Retrieval Fault: ", err);
+                tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-red-500 font-bold">Failed to load data from Cloud Sheet. Check your Spreadsheet ID configuration.</td></tr>`;
             });
-
-            tbody.innerHTML = builtRowsMarkup;
         }
 
-        // NEW PURGE COMPONENT FUNCTION
-        function deleteStudentRecord(targetIndex) {
-            if (confirm("Are you sure you want to permanently delete this student record? This cannot be undone.")) {
-                let database = JSON.parse(localStorage.getItem('ece_students_db')) || [];
+        // Safe CSV string parsing algorithm that accommodates cells with embedded commas or quotes
+        function parseCSVToArray(text) {
+            let lines = text.split(/\r\n|\n/);
+            let result = [];
+            // Row index 0 is skipped because it contains spreadsheet titles/headers
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i]) continue;
+                let insideQuote = false;
+                let entries = [];
+                let currentEntry = "";
                 
-                // Remove specified index object context cleanly from data sequence array
-                database.splice(targetIndex, 1);
-                
-                // Save updated array back into browser memory slots
-                localStorage.setItem('ece_students_db', JSON.stringify(database));
-                
-                // Refresh the list immediately
-                renderRegistryRows(globallyTrackedYear);
+                for (let j = 0; j < lines[i].length; j++) {
+                    let char = lines[i][j];
+                    if (char === '"') {
+                        insideQuote = !insideQuote;
+                    } else if (char === ',' && !insideQuote) {
+                        entries.push(currentEntry);
+                        currentEntry = "";
+                    } else {
+                        currentEntry += char;
+                    }
+                }
+                entries.push(currentEntry);
+                result.push(entries);
             }
+            return result;
         }
 
         function filterRegistryTable() {
             const query = document.getElementById("registrySearchInput").value.toLowerCase();
             const rows = document.getElementById("registryTableBody").getElementsByTagName("tr");
             for (let i = 0; i < rows.length; i++) {
+                if(rows[i].cells.length < 2) continue;
                 const nameCol = rows[i].cells[0].innerText.toLowerCase();
                 const regCol = rows[i].cells[1].innerText.toLowerCase();
                 rows[i].style.display = (nameCol.includes(query) || regCol.includes(query)) ? "" : "none";
