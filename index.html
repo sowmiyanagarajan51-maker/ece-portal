@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECE Department Portal | Women's Engineering College</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Guarantees the buttons behave like real links and show the pointer finger on hover */
+        button, .clickable-btn {
+            cursor: pointer !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <header class="bg-blue-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-microchip text-3xl text-amber-400"></i>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">WOMEN'S ENGINEERING COLLEGE</h1>
+                    <p class="text-xs text-blue-200">Electronics & Communication Engineering Portal</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="bg-blue-800 p-1.5 rounded-lg flex items-center space-x-1 border border-blue-700">
+                    <span class="text-xs font-semibold px-2 text-blue-300 uppercase tracking-wider">Student:</span>
+                    <a href="student-login.html" class="text-sm bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded font-medium transition">Login</a>
+                    <button onclick="openSignUpModal()" class="text-sm bg-amber-500 hover:bg-amber-400 text-slate-900 px-3 py-1 rounded font-bold transition">Sign Up</button>
+                </div>
+
+                <div class="border-l border-blue-700 pl-4">
+                    <button type="button" onclick="openAdminModal();" class="text-sm bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-1 transition z-10 relative">
+                        <i class="fa-solid fa-user-shield text-amber-400"></i>
+                        <span>Admin Portal</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-12 w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div class="space-y-6">
+            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide">ECE Department Database</span>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
+                Women's Engineering College <br><span class="text-blue-900 text-3xl md:text-4xl font-bold font-sans">Student Record Management</span>
+            </h2>
+            <p class="text-slate-600 text-lg leading-relaxed">
+                Welcome to the official ECE Student Portal. This platform allows students to autonomously maintain their academic profiles, project submissions, and core details, significantly reducing administrative overhead for faculty management.
+            </p>
+            <div class="pt-2 flex flex-wrap gap-4">
+                <button onclick="openSignUpModal()" class="bg-blue-900 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-medium transition shadow-sm">
+                    Get Started As Student
+                </button>
+                <a href="#instructions" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-5 py-3 rounded-lg font-medium transition">
+                    How it works
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-3">
+                <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">
+                    <i class="fa-solid fa-id-card text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-900">Self-Registration</h3>
+                <p class="text-sm text-slate-500">Students input their contact details, roll numbers, and academic milestones directly.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-900">Progress Tracking</h3>
+                <p class="text-sm text-slate-500">Allows seamless updates of semester GPAs, mini-projects, and elective choices.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-3 sm:col-span-2">
+                <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
+                    <i class="fa-solid fa-database text-xl"></i>
+                </div>
+                <h3 class="font-bold text-lg text-slate-900">Centralized Admin Control</h3>
+                <p class="text-sm text-slate-500">The Admin dashboard allows the Professor to filter, sort, export, and review all student records instantly without typing data manually.</p>
+            </div>
+        </div>
+    </main>
+
+    <section id="instructions" class="bg-white border-t border-slate-200 py-12">
+        <div class="max-w-4xl mx-auto px-4 text-center space-y-6">
+            <h3 class="text-2xl font-bold text-slate-900">Student Instructions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left pt-4">
+                <div class="space-y-2">
+                    <div class="font-bold text-blue-900 text-lg">1. Create Account</div>
+                    <p class="text-sm text-slate-600">Click on 'Sign Up' in the top right. Use your official University Registration/Roll Number.</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-blue-900 text-lg">2. Complete Profile</div>
+                    <p class="text-sm text-slate-600">Provide accurate core identification data, address points, and contact information details.</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="font-bold text-blue-900 text-lg">3. Maintain Data</div>
+                    <p class="text-sm text-slate-600">Log back in at the end of each semester to keep your record accurate and up to date.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="signUpModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
+            <div class="bg-blue-950 text-white p-5 relative shrink-0">
+                <button onclick="closeSignUpModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-blue-800 rounded-lg text-amber-400"><i class="fa-solid fa-user-plus text-lg"></i></div>
+                    <div>
+                        <h3 class="text-lg font-bold">Student Sign-Up</h3>
+                        <p class="text-xs text-blue-300">ECE Department Full Registration Profile</p>
+                    </div>
+                </div>
+            </div>
+            <form id="studentRegistrationForm" class="p-6 space-y-4 overflow-y-auto flex-grow text-sm" onsubmit="handleRegistration(event)">
+                <div>
+                    <label for="studentName" class="block font-semibold text-slate-700 mb-1">1. Student Name <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" id="studentName" required placeholder="Enter your full name" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+                <div>
+                    <label for="registerNo" class="block font-semibold text-slate-700 mb-1">2. Register No. <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-hashtag"></i></span>
+                        <input type="text" id="registerNo" required placeholder="Enter university registration number" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+                <div>
+                    <label for="dob" class="block font-semibold text-slate-700 mb-1">3. Date of Birth <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-calendar-days"></i></span>
+                        <input type="date" id="dob" required class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition text-slate-700">
+                    </div>
+                </div>
+                <div>
+                    <label for="address" class="block font-semibold text-slate-700 mb-1">4. Address <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute top-2.5 left-3 text-slate-400"><i class="fa-solid fa-location-dot"></i></span>
+                        <textarea id="address" required rows="2" placeholder="Enter residential address" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition resize-none"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <label for="studentMobile" class="block font-semibold text-slate-700 mb-1">5. Student Mobile No. <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-phone"></i></span>
+                        <input type="tel" id="studentMobile" required placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+                <div>
+                    <label for="mailId" class="block font-semibold text-slate-700 mb-1">6. Mail ID <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" id="mailId" required placeholder="student@university.com" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+                <div>
+                    <label for="parentMobile" class="block font-semibold text-slate-700 mb-1">7. Parents Mobile Number <span class="text-red-500">*</span></label>
+                    <div class="relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-users"></i></span>
+                        <input type="tel" id="parentMobile" required placeholder="Enter parent contact number" pattern="[0-9]{10}" class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="academicYear" class="block font-semibold text-slate-700 mb-1">8. Year <span class="text-red-500">*</span></label>
+                        <select id="academicYear" required class="w-full bg-white px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-700">
+                            <option value="" disabled selected>Select Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="semester" class="block font-semibold text-slate-700 mb-1">9. Semester <span class="text-red-500">*</span></label>
+                        <select id="semester" required class="w-full bg-white px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-700">
+                            <option value="" disabled selected>Select Sem</option>
+                            <option value="Sem 1">Semester 1</option><option value="Sem 2">Semester 2</option><option value="Sem 3">Semester 3</option><option value="Sem 4">Semester 4</option><option value="Sem 5">Semester 5</option><option value="Sem 6">Semester 6</option><option value="Sem 7">Semester 7</option><option value="Sem 8">Semester 8</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 rounded-lg shadow-md transition mt-2 flex items-center justify-center space-x-2">
+                    <span>Submit Profile Records</span><i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-slate-100 flex flex-col">
+            <div class="bg-slate-900 text-white p-5 relative shrink-0">
+                <button type="button" onclick="closeAdminModal();" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-slate-800 rounded-lg text-amber-400">
+                        <i class="fa-solid fa-user-shield text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">Faculty Admin Login</h3>
+                        <p class="text-xs text-slate-400">Secure Access Channel</p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="adminLoginForm" class="p-6 space-y-4 text-sm" onsubmit="handleAdminLogin(event)">
+                <div>
+                    <label for="adminId" class="block font-semibold text-slate-700 mb-1">Admin Login ID / Email <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                        <input type="email" id="adminId" required placeholder="professor@college.com" 
+                            class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="adminPassword" class="block font-semibold text-slate-700 mb-1">Password <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" id="adminPassword" required placeholder="••••••••" 
+                            class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition mt-2 flex items-center justify-center space-x-2">
+                    <span>Secure Access Portal</span>
+                    <i class="fa-solid fa-key text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-slate-900 text-slate-400 text-xs text-center py-6 border-t border-slate-800">
+        <p>&copy; 2026 Women's Engineering College — ECE Department Student Portal.</p>
+    </footer>
+
+    <script>
+        // Use direct function assignments to make sure execution context is global
+        window.openSignUpModal = function() {
+            const m = document.getElementById('signUpModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeSignUpModal = function() {
+            const m = document.getElementById('signUpModal');
+            m.classList.remove('flex');
+            m.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.openAdminModal = function() {
+            const m = document.getElementById('adminModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeAdminModal = function() {
+            const m = document.getElementById('adminModal');
+            m.classList.remove('flex');
+            m.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.handleAdminLogin = function(event) {
+            event.preventDefault();
+            const id = document.getElementById('adminId').value;
+            alert(`Verifying Admin Credentials for: ${id}\n\nAccess authorized! Connecting backend administrative view panels.`);
+            window.closeAdminModal();
+            document.getElementById('adminLoginForm').reset();
+        };
+
+        window.handleRegistration = function(event) {
+            event.preventDefault();
+            alert(`Registration Captured Successfully!`);
+            window.closeSignUpModal();
+            document.getElementById('studentRegistrationForm').reset();
+        };
+
+        // Window background close configuration
+        window.onclick = function(event) {
+            const sModal = document.getElementById('signUpModal');
+            const aModal = document.getElementById('adminModal');
+            if (event.target === sModal) window.closeSignUpModal();
+            if (event.target === aModal) window.closeAdminModal();
+        };
+    </script>
+</body>
+</html>
